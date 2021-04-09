@@ -12,7 +12,6 @@ import (
 )
 
 func main() {
-	fmt.Println(os.Args)
 	os.Exit(run(os.Stdin, os.Stdout, os.Stderr, os.Args[1:]))
 }
 

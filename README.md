@@ -10,7 +10,7 @@ go get -u github.com/jim/wtfunc
 
 ## Usage
 
-Pass the path to a valid Go file on the command line or via standard in. Pass the line number to check for a function body with `-line`. This program uses Go's standard flag parsing and requires that the `-line` flag comes before the filename.
+Pass the path to a valid Go file on the command line or the contets of such a file via standard in. Pass the line number to check for a function body with `-line`. This program uses Go's standard flag parsing and requires that the `-line` flag comes before the filename.
 
 ```
 $ wtfunc -line 21 main.go

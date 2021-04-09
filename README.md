@@ -5,7 +5,7 @@ Find what Go function is on a given line of a file. This is intended to be a bui
 ## Installation
 
 ```
-go get github.com/jim/wtfunc
+go get -u github.com/jim/wtfunc
 ```
 
 ## Usage

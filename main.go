@@ -16,10 +16,12 @@ func main() {
 }
 
 func run(in io.Reader, out io.Writer, err io.Writer, args []string) int {
+	var listMode bool
 	var line int
 
 	flagSet := flag.NewFlagSet("wtfunc", flag.ExitOnError)
 	flagSet.IntVar(&line, "line", 0, "line of file to check")
+	flagSet.BoolVar(&listMode, "list", false, "list all funcs in file")
 	flagSet.Parse(args)
 
 	fset := token.NewFileSet()
@@ -45,18 +47,26 @@ func run(in io.Reader, out io.Writer, err io.Writer, args []string) int {
 		}
 	}
 
-	for _, decl := range parsedFile.Decls {
-		if fn, ok := decl.(*ast.FuncDecl); ok {
+	if listMode {
+		for _, decl := range parsedFile.Decls {
+			if fn, ok := decl.(*ast.FuncDecl); ok {
+				fmt.Fprintln(out, fn.Name.Name)
+			}
+		}
+		return 0
+	} else {
+		for _, decl := range parsedFile.Decls {
+			if fn, ok := decl.(*ast.FuncDecl); ok {
 
-			pos := fset.Position(fn.Pos())
-			end := fset.Position((fn.End()))
+				pos := fset.Position(fn.Pos())
+				end := fset.Position((fn.End()))
 
-			if pos.Line <= line && end.Line >= line {
-				fmt.Fprint(out, fn.Name.Name)
-				return 0
+				if pos.Line <= line && end.Line >= line {
+					fmt.Fprint(out, fn.Name.Name)
+					return 0
+				}
 			}
 		}
 	}
-
 	return 2
 }

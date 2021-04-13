@@ -16,3 +16,11 @@ Pass the path to a valid Go file on the command line or the contets of such a fi
 $ wtfunc -line 21 main.go
 run
 ```
+
+To get the list of all functions in a file, use `-list`:
+
+```
+$ wtfunc -list main.go
+main
+run
+```

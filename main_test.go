@@ -54,6 +54,12 @@ func TestCLI(t *testing.T) {
 			Output: "pointerReceiver",
 			Status: 0,
 		},
+		{
+			Name:   "list all functions in file",
+			Args:   []string{"-list", "testdata/code.go"},
+			Output: "main\nvalueReceiver\npointerReceiver\n",
+			Status: 0,
+		},
 	} {
 		t.Run(strings.Join(test.Args, ""), func(t *testing.T) {
 			in := bytes.NewBufferString(test.In)

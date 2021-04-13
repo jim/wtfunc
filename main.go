@@ -66,12 +66,13 @@ func run(in io.Reader, out io.Writer, err io.Writer, args []string) int {
 				pos := fset.Position(fn.Pos())
 				end := fset.Position((fn.End()))
 
-				if pos.Line <= line && end.Line >= line {
-					fmt.Fprint(out, fn.Name.Name)
+				if pos.Line <= line && end.Line >= line &&
+					(!testMode || strings.HasPrefix(fn.Name.Name, "Test")) {
+					fmt.Fprintln(out, fn.Name.Name)
 					return 0
 				}
 			}
 		}
+		return 2
 	}
-	return 2
 }

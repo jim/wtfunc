@@ -27,8 +27,7 @@ func TestCLI(t *testing.T) {
 		{
 			Name:   "happy path",
 			Args:   []string{"-line=6", "testdata/code.go"},
-			Output: "main",
-			Status: 0,
+			Output: "main\n",
 		},
 		{
 			Name:   "no matching func",
@@ -39,38 +38,43 @@ func TestCLI(t *testing.T) {
 			Name:   "reading from standard in",
 			Args:   []string{"-line=6"},
 			In:     readFile(t, "testdata/code.go"),
-			Output: "main",
-			Status: 0,
+			Output: "main\n",
 		},
 		{
 			Name:   "method with value receiver",
 			Args:   []string{"-line=12", "testdata/code.go"},
-			Output: "valueReceiver",
-			Status: 0,
+			Output: "valueReceiver\n",
 		},
 		{
 			Name:   "method with pointer receiver",
 			Args:   []string{"-line=16", "testdata/code.go"},
-			Output: "pointerReceiver",
-			Status: 0,
+			Output: "pointerReceiver\n",
 		},
 		{
 			Name:   "list all functions in file",
 			Args:   []string{"-list", "testdata/code.go"},
 			Output: "main\nvalueReceiver\npointerReceiver\n",
-			Status: 0,
 		},
 		{
 			Name:   "list all test functions in file",
 			Args:   []string{"-test", "-list", "testdata/tests.go"},
 			Output: "TestExample\n",
-			Status: 0,
 		},
 		{
 			Name:   "list all testfy methods in file",
 			Args:   []string{"-test", "-list", "testdata/testify_tests.go"},
 			Output: "TestExample\n",
-			Status: 0,
+		},
+		{
+			Name:   "find test on a line",
+			Args:   []string{"-test", "-line=17", "testdata/tests.go"},
+			Output: "TestExample\n",
+		},
+		{
+			Name:   "find no test on a line",
+			Args:   []string{"-test", "-line=10", "testdata/tests.go"},
+			Output: "",
+			Status: 2,
 		},
 	} {
 		t.Run(strings.Join(test.Args, ""), func(t *testing.T) {

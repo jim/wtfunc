@@ -20,3 +20,9 @@ jobs:
             name: 'wtfunc'
             compress: 'true'
             dest: 'dist'
+      - name: Copy build-artifacts
+        uses: skx/github-action-publish-binaries@release-0.15
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: "./dist/*.tar.gz"

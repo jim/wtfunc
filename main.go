@@ -9,6 +9,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -17,11 +18,13 @@ func main() {
 
 func run(in io.Reader, out io.Writer, err io.Writer, args []string) int {
 	var listMode bool
+	var testMode bool
 	var line int
 
 	flagSet := flag.NewFlagSet("wtfunc", flag.ExitOnError)
 	flagSet.IntVar(&line, "line", 0, "line of file to check")
 	flagSet.BoolVar(&listMode, "list", false, "list all funcs in file")
+	flagSet.BoolVar(&testMode, "test", false, "only return the names of tests")
 	flagSet.Parse(args)
 
 	fset := token.NewFileSet()
@@ -50,7 +53,9 @@ func run(in io.Reader, out io.Writer, err io.Writer, args []string) int {
 	if listMode {
 		for _, decl := range parsedFile.Decls {
 			if fn, ok := decl.(*ast.FuncDecl); ok {
-				fmt.Fprintln(out, fn.Name.Name)
+				if !testMode || strings.HasPrefix(fn.Name.Name, "Test") {
+					fmt.Fprintln(out, fn.Name.Name)
+				}
 			}
 		}
 		return 0
